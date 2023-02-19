@@ -81,9 +81,7 @@ def save_comics_on_server(vk_access_token):
     method = 'photos.saveWallPhoto'
     url = os.path.join(VK_URL_BASE, method)
     uploaded_items = upload_comic_on_server(vk_access_token).json()
-    server = uploaded_items["server"]
-    photo = uploaded_items["photo"]
-    hash_ = uploaded_items["hash"]
+    server, photo, hash_ = uploaded_items.items()
     params = {
         'access_token': vk_access_token,
         'v': 5.131,
