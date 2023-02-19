@@ -41,7 +41,7 @@ def get_file_extension(url):
     return ext
 
 
-def get_comics_from_xkcd():
+def get_random_comics_from_xkcd():
     comics_number = random.randint(1, get_number_of_comics())
     url = os.path.join(XKCD_URL_BASE, str(comics_number), 'info.0.json')
 
