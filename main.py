@@ -15,7 +15,7 @@ vk_user_id = os.getenv('VK_USER_ID')
 vk_access_token = os.getenv('VK_ACCESS_TOKEN')
 
 
-def get_number_of_comics():
+def get_number_of_comic():
     url = os.path.join(XKCD_URL_BASE, 'info.0.json')
     response = requests.get(url)
     response.raise_for_status()
@@ -41,8 +41,8 @@ def get_file_extension(url):
     return ext
 
 
-def get_random_comics_from_xkcd():
-    comics_number = random.randint(1, get_number_of_comics())
+def get_random_comic_from_xkcd():
+    comics_number = random.randint(1, get_number_of_comic())
     url = os.path.join(XKCD_URL_BASE, str(comics_number), 'info.0.json')
 
     response = requests.get(url)
@@ -70,7 +70,7 @@ def get_vk_upload_address():
     return upload_url
 
 
-def upload_comics_on_server():
+def upload_comic_on_server():
     with open('random_image.png', 'rb') as file:
         url = get_vk_upload_address()
         files = {
@@ -88,7 +88,7 @@ def upload_comics_on_server():
 def save_comics_on_server():
     method = 'photos.saveWallPhoto'
     url = os.path.join(VK_URL_BASE, method)
-    uploaded_items = upload_comics_on_server()
+    uploaded_items = upload_comic_on_server()
     server = uploaded_items[0]
     photo = uploaded_items[1]
     hash_ = uploaded_items[2]
@@ -106,7 +106,7 @@ def save_comics_on_server():
     return media_id
 
 
-def publish_comics(comment):
+def publish_comic(comment):
     method = 'wall.post'
     url = os.path.join(VK_URL_BASE, method)
     owner_id = vk_user_id
@@ -125,16 +125,16 @@ def publish_comics(comment):
     return response
 
 
-def remove_comics_file():
+def remove_comic_file():
     for filename in glob.glob("random_image.*"):
         os.remove(filename)
 
 
 def main():
     load_dotenv()
-    comment = get_comics_from_xkcd()
-    publish_comics(comment)
-    remove_comics_file()
+    comment = get_random_comic_from_xkcd()
+    publish_comic(comment)
+    remove_comic_file()
 
 
 if __name__ == '__main__':
