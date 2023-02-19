@@ -9,10 +9,6 @@ from dotenv import load_dotenv
 XKCD_URL_BASE = 'https://xkcd.com/'
 VK_URL_BASE = 'https://api.vk.com/method/'
 
-vk_group_id = os.getenv('VK_GROUP_ID')
-vk_user_id = os.getenv('VK_USER_ID')
-vk_access_token = os.getenv('VK_ACCESS_TOKEN')
-
 
 def get_number_of_comic():
     url = os.path.join(XKCD_URL_BASE, 'info.0.json')
@@ -55,7 +51,7 @@ def get_random_comic_from_xkcd():
     return comment
 
 
-def get_vk_upload_address():
+def get_vk_upload_address(vk_access_token):
     method = 'photos.getWallUploadServer'
     url = os.path.join(VK_URL_BASE, method)
     params = {
@@ -69,9 +65,9 @@ def get_vk_upload_address():
     return upload_url
 
 
-def upload_comic_on_server():
+def upload_comic_on_server(vk_access_token):
     with open('random_image.png', 'rb') as file:
-        url = get_vk_upload_address()
+        url = get_vk_upload_address(vk_access_token)
         files = {
             'file': file,
         }
@@ -84,10 +80,10 @@ def upload_comic_on_server():
     return server, photo, hash_
 
 
-def save_comics_on_server():
+def save_comics_on_server(vk_access_token):
     method = 'photos.saveWallPhoto'
     url = os.path.join(VK_URL_BASE, method)
-    uploaded_items = upload_comic_on_server()
+    uploaded_items = upload_comic_on_server(vk_access_token)
     server = uploaded_items[0]
     photo = uploaded_items[1]
     hash_ = uploaded_items[2]
@@ -105,15 +101,15 @@ def save_comics_on_server():
     return media_id
 
 
-def publish_comic(comment):
+def publish_comic(comment, vk_group_id, vk_user_id, vk_access_token):
     method = 'wall.post'
     url = os.path.join(VK_URL_BASE, method)
     owner_id = vk_user_id
-    media_id = save_comics_on_server()
+    media_id = save_comics_on_server(vk_access_token)
     params = {
         'access_token': vk_access_token,
         'v': 5.131,
-        'owner_id': vk_app_group_id,
+        'owner_id': vk_group_id,
         'from_group': 1,
         'attachments': f"photo{owner_id}_{media_id}",
         'message': comment,
@@ -131,8 +127,11 @@ def remove_comic_file():
 
 def main():
     load_dotenv()
+    vk_group_id = os.getenv('VK_GROUP_ID')
+    vk_user_id = os.getenv('VK_USER_ID')
+    vk_access_token = os.getenv('VK_ACCESS_TOKEN')
     comment = get_random_comic_from_xkcd()
-    publish_comic(comment)
+    publish_comic(comment, vk_group_id, vk_user_id, vk_access_token)
     remove_comic_file()
 
 
