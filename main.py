@@ -73,20 +73,17 @@ def upload_comic_on_server(vk_access_token):
         }
         response = requests.post(url=url, files=files)
         response.raise_for_status()
-        server = response.json()["server"]
-        photo = response.json()["photo"]
-        hash_ = response.json()["hash"]
 
-    return server, photo, hash_
+    return response
 
 
 def save_comics_on_server(vk_access_token):
     method = 'photos.saveWallPhoto'
     url = os.path.join(VK_URL_BASE, method)
-    uploaded_items = upload_comic_on_server(vk_access_token)
-    server = uploaded_items[0]
-    photo = uploaded_items[1]
-    hash_ = uploaded_items[2]
+    uploaded_items = upload_comic_on_server(vk_access_token).json()
+    server = uploaded_items["server"]
+    photo = uploaded_items["photo"]
+    hash_ = uploaded_items["hash"]
     params = {
         'access_token': vk_access_token,
         'v': 5.131,
