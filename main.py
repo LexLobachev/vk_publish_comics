@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 XKCD_URL_BASE = 'https://xkcd.com/'
 VK_URL_BASE = 'https://api.vk.com/method/'
 
-vk_app_client_id = os.getenv('VK_APP_CLIENT_ID')
 vk_group_id = os.getenv('VK_GROUP_ID')
 vk_user_id = os.getenv('VK_USER_ID')
 vk_access_token = os.getenv('VK_ACCESS_TOKEN')
