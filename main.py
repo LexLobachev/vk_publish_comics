@@ -9,8 +9,6 @@ from dotenv import load_dotenv
 XKCD_URL_BASE = 'https://xkcd.com/'
 VK_URL_BASE = 'https://api.vk.com/method/'
 
-load_dotenv()
-
 vk_app_client_id = os.getenv('VK_APP_CLIENT_ID')
 vk_group_id = os.getenv('VK_GROUP_ID')
 vk_user_id = os.getenv('VK_USER_ID')
@@ -133,6 +131,7 @@ def remove_comics_file():
 
 
 def main():
+    load_dotenv()
     comment = get_comics_from_xkcd()
     publish_comics(comment)
     remove_comics_file()
