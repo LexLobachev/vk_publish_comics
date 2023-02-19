@@ -116,8 +116,7 @@ def publish_comic(comment, vk_media_id, vk_group_id, vk_user_id, vk_access_token
 
 
 def remove_comic_file():
-    for filename in glob.glob("random_image.*"):
-        os.remove(filename)
+    os.remove("random_image.png")
 
 
 def main():
