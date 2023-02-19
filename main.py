@@ -129,8 +129,10 @@ def main():
     upload_url = get_vk_upload_address(vk_access_token)
     upload_items_response = upload_comic_on_server(upload_url)
     media_id = save_comics_on_server(upload_items_response, vk_access_token)
-    publish_comic(comment, media_id, vk_group_id, vk_user_id, vk_access_token)
-    remove_comic_file()
+    try:
+        publish_comic(comment, media_id, vk_group_id, vk_user_id, vk_access_token)
+    finally:
+        remove_comic_file()
 
 
 if __name__ == '__main__':
