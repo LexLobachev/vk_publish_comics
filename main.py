@@ -95,7 +95,7 @@ def publish_comic(comment, vk_media_id, vk_group_id, vk_user_id, vk_access_token
     params = {
         'access_token': vk_access_token,
         'v': 5.131,
-        'owner_id': "-" + vk_group_id,
+        'owner_id': f'-{vk_group_id}',
         'from_group': 1,
         'attachments': f"photo{vk_user_id}_{vk_media_id}",
         'message': comment,
